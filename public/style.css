@@ -50,10 +50,20 @@ form button {
 #messages li { 
   padding: 5px 10px; 
 }
-
-#messages li:nth-child(odd) { 
-  background: #eee; 
+#messages li.mes { 
+  color:#3598dc
 }
+#messages li.sys { 
+  color:#f1c40f
+}
+#messages li.sys::before{content:"(!)"}
+#messages li.join { 
+  color:#2a80b9
+}
+#messages li.exit { 
+  color:#f75455
+}
+
 
 #wrapper2 {
   position:absolute; 
