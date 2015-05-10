@@ -15,17 +15,37 @@
 body { 
   font: 20px Helvetica, Arial; 
 }
+@media (min-width:319px) and (max-width:568px){
+body { 
+ font-size:16px;
+}
+}
 
 #container {
-	
   width: 100%;
-  height:100%;
+position:absolute;
+top:0;bottom:0;
   display:box;
   display:-webkit-box;
   display:-moz-box;
   display:-ms-box;
   display:flex;
+  -webkit-animation: 2s show ease;
+    -moz-animation: 2s show ease;
+    animation: 2s show ease;
 }
+@-webkit-keyframes show {
+    0% { opacity: 0;}
+    100% { opacity: 1}
+  }
+  @-moz-keyframes show {
+    0% { opacity: 0;}
+    100% { opacity: 1}
+  }
+  @keyframes show{
+    0% { opacity: 0;}
+    100% { opacity: 1}
+  }
 #wrapper1 {
 	font-size:.8em;
 	box-flex:1;-webkit-box-flex:1;-moz-box-flex:1;-ms-box-flex:1;
@@ -34,12 +54,48 @@ body {
    background:#56eed9;
    color:#fff;
 }
+#wrapper1 .ani{
+	position:relative;
+	-webkit-animation: 2s show-menu ease;
+    -moz-animation: 2s show-menu ease;
+    animation: 2s show-menu ease;
+}
+
+@-webkit-keyframes show-menu {
+    0% { left:-100px}
+    100% { left:0}
+  }
+  @-moz-keyframes show-menu {
+    0% { left:-100px}
+    100% { left:0}
+  }
+  @keyframes show-menu{
+    0% { left:-100px}
+    100% { left:0}
+  }
 #wrapper2 {
 	font-size:.7em;
 	box-flex:2;-webkit-box-flex:2;-moz-box-flex:2;-ms-box-flex:2;
     flex:2;
-
 }
+#mes-box{
+	position:relative;
+	-webkit-animation: 2s show-input ease;
+    -moz-animation: 2s show-input ease;
+    animation: 2s show-input ease;
+}
+@-webkit-keyframes show-input {
+    0% { top:-40px;}
+    100% { top:0}
+  }
+  @-moz-keyframes show-input {
+     0% { top:-40px;}
+    100% { top:0}
+  }
+  @keyframes show-input{
+     0% { top:-40px;}
+    100% { top:0}
+  }
 #mes-box form { 
   bottom: 0; 
   width: 100%; 
@@ -87,7 +143,23 @@ font-size:20px;
 
 #messages li { 
   padding: 5px 10px; 
+  position:relative;
+  	-webkit-animation: 2s show-mes ease;
+    -moz-animation: 2s show-mes ease;
+    animation: 2s show-mes ease;
 }
+@-webkit-keyframes show-mes {
+    0% { height:0;right:-40px;opacity:0;}
+    100% { height:15px;right:0;opacity:1;}
+  }
+  @-moz-keyframes show-mes {
+     0% { height:0;right:-40px;opacity:0;}
+    100% { height:15px;right:0;opacity:1;}
+  }
+  @keyframes show-mes{
+     0% { height:0;right:-40px;opacity:0;}
+    100% { height:15px;right:0;opacity:1;}
+  }
 #messages li.mes { 
   color:#3598dc
 }

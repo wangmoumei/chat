@@ -10,7 +10,7 @@
   <body>
     <div id="container">
         <div id="wrapper1">
-        
+        <div class="ani">
             <ul id="command">
                 <li>输入 /join xxxx 加入房间</li>
                 <li>输入 /name xxxx 更改姓名</li>
@@ -22,6 +22,7 @@
             <ul id="room">
                 <li id="Lobby" class="icon-chat">Lobby</li>
             </ul>
+            </div>
         </div>
         <div id="wrapper2">
             <div id="mes-box">
@@ -41,11 +42,6 @@
     <!--jQuery-->
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
-		//浏览器高度
-		var hh = document.documentElement.clientHeight;
-		window.onresize = function(){hh = document.documentElement.clientHeight;document.getElementById('container').style.height=hh+'px';}
-		
-		document.getElementById('container').style.height=hh+'px';
 		//颜色变量
 		var color,bgcolor;
         
@@ -132,6 +128,18 @@
         function goRoom(ele){
             socket.emit('change room', ele.id);
         }
+		//JS动画函数
+		function fx(f,t,fn,end,tm,pow){
+			var D=Date;
+			var d=new D;
+			var e;
+			var c=tm||240;
+			var pow=pow||2;
+			return e=setInterval(function (){
+				var z=Math.min(1,(new D-d)/c);
+				(false===fn(+f+(t-f)*Math.pow(z,pow),z)||z==1) && end && end(clearTimeout(e));
+			},10);
+		}
     </script>
   </body>
 </html>

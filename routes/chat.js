@@ -176,6 +176,9 @@ chat.changeRoom = function(socket) {
 			var sysMsg = that.userName[socket.id]+ '离开了你的房间' + that.Room[that.currentRoom[socket.id]].name ;
 			that.Room[that.currentRoom[socket.id]].count--;
 			that.io.to(that.Room[that.currentRoom[socket.id]].name).emit('sys message', sysMsg);
+			//向房间里所有人广播消息
+			sysMsg = that.userName[socket.id] +'加入了你的房间';
+			that.io.to(msg).emit('sys message', sysMsg);
 			//再让用户加入新的范围
 			socket.join(msg);
 			var num = that.currentRoom[socket.id];
@@ -197,6 +200,7 @@ chat.changeRoom = function(socket) {
 			sysMsg = '你加入了房间' + that.Room[that.currentRoom[socket.id]].name;
 			//向这一个客户端广播系统消息:你加入了房间
 			socket.emit('sys message', sysMsg);
+			
 			//向这一个客户端广播改房间名
 			socket.emit('change room name', msg);
 			//向所有人广播房间列表和人数
