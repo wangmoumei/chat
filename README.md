@@ -19,3 +19,4 @@ chat.roomlst = function(){
 <h3>第二次修改内容</h3>
 <p>今天比较闲。。也没有打游戏。。</p>
 <p>更新了UI，原版的实在看不下去。有了心怡的UI才有动力学下去！233</p>
+<img src="https://github.com/wangmoumei/chat/blob/master/public/image/ver2.0.png" width=100/>
