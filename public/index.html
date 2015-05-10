@@ -1,35 +1,39 @@
 <!doctype html>
 <html>
   <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
     <title>Socket.IO chat</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/shop.css">
+    <link rel="stylesheet" href="css/animation.css"><!--[if IE 7]><link rel="stylesheet" href="css/shop-ie7.css"><![endif]-->
   </head>
   <body>
     <div id="container">
-        <div>
-          <div>Room Name: <span id="roomName">Lobby</span></div>
-        </div>
         <div id="wrapper1">
-            <ul id="messages"></ul>
-        </div>
-        <div id="wrapper2">
-            <div>Command Instruction</div>
+        
             <ul id="command">
                 <li>输入 /join xxxx 加入房间</li>
                 <li>输入 /name xxxx 更改姓名</li>
             </ul>
             <br>
+            <div style="text-align:center"><i class="icon-emo-happy"></i>Wellcome!</div>
+            <br>
             <div>Room List</div>
             <ul id="room">
-                <li id="Lobby" class="roomBtn">Lobby</li>
+                <li id="Lobby" class="icon-chat">Lobby</li>
             </ul>
         </div>
-        <div>
-            <form action="">
-              <input id="m" autocomplete="off" />
-              <button>Send</button>
-            </form>
+        <div id="wrapper2">
+            <div id="mes-box">
+                <form action="">
+                <i class="demo-icon icon-emo-happy"></i>
+                  <input id="m" autocomplete="off" />
+                  <button class="demo-icon icon-comment"></button>
+                </form>
+            </div>
+            <ul id="messages"></ul>
         </div>
+        
     </div>
 
     <!--socket.io.js-->
@@ -37,6 +41,11 @@
     <!--jQuery-->
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
+		//浏览器高度
+		var hh = document.documentElement.clientHeight;
+		window.onresize = function(){hh = document.documentElement.clientHeight;document.getElementById('container').style.height=hh+'px';}
+		
+		document.getElementById('container').style.height=hh+'px';
 		//颜色变量
 		var color,bgcolor;
         
@@ -48,13 +57,13 @@
         // 在浏览器里显示信息
         function showMsg(msg,type) {
 			if(type == 1)
-            $('#messages').append($('<li class="mes">').text(msg));
+            $('#messages').prepend($('<li class="mes">').text(msg));
 			else if(type == 2)
-            $('#messages').append($('<li class="sys">').text(msg));
+            $('#messages').prepend($('<li class="sys">').text(msg));
 			else if(type == 3)
-            $('#messages').append($('<li class="join">').text(msg));
+            $('#messages').prepend($('<li class="join">').text(msg));
 			else if(type == 4)
-            $('#messages').append($('<li class="exit">').text(msg));
+            $('#messages').prepend($('<li class="exit">').text(msg));
         }
         //dispatch command to different event 针对不同发送的信息进行命令分发
         // /join xxxx --> join a room xxx 加入新聊天室xxx
@@ -106,14 +115,14 @@
         //listent to 'change room name' event. Once the event is triggered (emitted), it will display message in html
         //监听'change room name'事件。一旦事件触发(emit)，它将会在浏览器上显示信息        
         socket.on('change room name', function(msg) {
-          $('#roomName').html(msg);
+          //$('#roomName').html(msg);
         });
         socket.on('room list', function(msg){
             // alert(msg);
             
             var roomlst='';
             for(var i=0;i<msg.length;i++){
-                roomlst += '<li id='+msg[i].name+' onclick=goRoom(this)>'+msg[i].name+'('+msg[i].count+')</li>';
+                roomlst += '<li id='+msg[i].name+' class="icon-chat" onclick=goRoom(this)>'+msg[i].name+'('+msg[i].count+')</li>';
             }
             $("#room").html(roomlst);
         });
