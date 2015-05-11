@@ -11,14 +11,20 @@
     <div id="container">
         <div id="wrapper1">
         <div class="ani">
-            <ul id="command">
-                <li>输入 /join xxxx 加入房间</li>
-                <li>输入 /name xxxx 更改姓名</li>
-            </ul>
+            <div id="namebox">
+                <i class="icon-emo-wink"></i>guest
+            </div>
+            <div id="roombox">
+                现在，你可以创建一个新的<br/>
+                <div class="new-room icon-chat">
+                    <input type="button" id="newroom" value="聊天室"/>
+                    <span id="shownr">
+                        <input type="text" id="newrname"/><i class="icon-ok-circled2"></i><i class="icon-cancel-circled2"></i>
+                    </span>
+                </div>
+            </div>
             <br>
-            <div style="text-align:center"><i class="icon-emo-happy"></i>Wellcome!</div>
-            <br>
-            <div>Room List</div>
+            <div style="font-size:.9em"><i class="icon-emo-happy"></i>欢迎你进入他们的聊天室</div>
             <ul id="room">
                 <li id="Lobby" class="icon-chat">Lobby</li>
             </ul>
@@ -128,6 +134,18 @@
         function goRoom(ele){
             socket.emit('change room', ele.id);
         }
+        $("#newroom").click(function(){
+            var that = this;
+            this.className="hidden";
+            $("#shownr").show().css();
+            setTimeout(function() {
+                that.style.width=0;
+            }, 1000);
+            
+        });
+        
+        
+        
 		//JS动画函数
 		function fx(f,t,fn,end,tm,pow){
 			var D=Date;
