@@ -53,11 +53,11 @@
         // 在浏览器里显示信息
         function showMsg(msg,type) {
 			if(type == 1)
-            $('#messages').prepend($('<li class="mes">').text(msg));
+            $('#messages').prepend($('<li class="mes">').html(msg.name +': '+msg.msg));
 			else if(type == 2)
             $('#messages').prepend($('<li class="sys">').text(msg));
 			else if(type == 3)
-            $('#messages').prepend($('<li class="join">').text(msg));
+            $('#messages').prepend($('<li class="myself">').html(msg.msg +' :'+msg.name));
 			else if(type == 4)
             $('#messages').prepend($('<li class="exit">').text(msg));
         }
@@ -100,7 +100,7 @@
         });
         //listent to 'new user' event. Once the event is triggered (emitted), it will display message in html
         //监听'new user'事件。一旦事件触发(emit)，它将会在浏览器上显示信息
-        socket.on('new user', function(msg) {
+        socket.on('chat myself', function(msg) {
             showMsg(msg,3);
         });
         //listent to 'exit user' event. Once the event is triggered (emitted), it will display message in html

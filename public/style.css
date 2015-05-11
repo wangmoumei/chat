@@ -18,6 +18,7 @@ body {
 @media (min-width:319px) and (max-width:568px){
 body { 
  font-size:16px;
+ font-family:微软雅黑;
 }
 }
 
@@ -166,20 +167,21 @@ font-size:20px;
 #messages li.sys { 
   color:#f1c40f
 }
-#messages li.sys::before{content:"(!)"}
-#messages li.join { 
-  color:#2a80b9
+
+#messages li.myself { 
+  color:#2fcc71;text-align:right;
 }
 #messages li.exit { 
   color:#f75455
 }
-
+#messages li.sys::before,#messages li.exit::before{content:"(!)"}
 
 #room {
   list-style-type: none;
-  margin-left: 10px;
+  margin-right: 10px;
 }
 #room li{
+	padding:10px 0 10px 10px;
 	transition:background-color 1s ease-in;
 }
 #room li:hover{

@@ -37,21 +37,22 @@ chat.ioListen = function() {
 
 	this.io.on('connection', function(socket){
 		
-		that.assignRoom(socket);
-		
 		//客户端链接上一后,先把所有的事件绑绑好
-		//一个一个绑写起来会把这个connection函数写太长,所以就分开成几个函数,分开绑吧。架构Get。
-		that.changeRoom(socket);
+		//一个一个绑写起来会把这个connection函数写太长,所以就分开成几个函数,在函数里绑吧。架构Get。
+		
+		that.changeRoom(socket);//加入房间
 
-		that.sysMsg(socket);
+		that.sysMsg(socket);//系统消息
 
-		that.userMsg(socket);
+		that.userMsg(socket);//发消息
 
-		that.assignGuestName(socket);
+		that.assignGuestName(socket);//一开始加入聊天室时,分配名字
+		
+		that.assignRoom(socket);//一开始加入聊天室时，自动进入lobby房间
 
-		that.changeName(socket);
+		that.changeName(socket);//改名字
 
-		that.disconnect(socket);
+		that.disconnect(socket);//断开链接	
 
 		console.log('socket connection');
 	});
@@ -63,11 +64,23 @@ chat.userMsg = function(socket) {
 	var that = this;
 	//绑发消息的事件,客户端发消息的时候就来激活这个
 	socket.on('chat message', function(msg){
-		msg = that.userName[socket.id] + ': ' + msg;
+		//msg = that.userName[socket.id] + ': ' + msg;
 		console.log(socket.id + "|" +msg);
+		//先把发消息的人从这个房间范围里踢出去，目的是 为了另外单独向这个人发带标志的消息,避免重复显示
+		socket.leave(that.Room[that.currentRoom[socket.id]].name,function(){
+			//只向这个房间范围的客户端广播,用到io.to(范围).emit
+			that.io.to(that.Room[that.currentRoom[socket.id]].name).emit('chat message', {name:that.userName[socket.id],msg:msg});
+			
+			//单独发消息，新加个 chat myself，右对齐哒
+			socket.emit('chat myself', {name:that.userName[socket.id],msg:msg});
+			
+			//再把他加回来(*•̀ㅂ•́)و
+			socket.join(that.Room[that.currentRoom[socket.id]].name);
+			
+			
+		});
 		
-		//只向这个房间范围的客户端广播,用到io.to(范围).emit
-		that.io.to(that.Room[that.currentRoom[socket.id]].name).emit('chat message', msg);
+		
 	});
 
 }
@@ -91,10 +104,10 @@ chat.assignGuestName = function(socket) {
 	this.usedName.push('Guest' + this.userNum);
 	this.userNum++;
 	
-	var msg = this.userName[socket.id] + ' 加入了聊天室';
+	//ar msg = this.userName[socket.id] + ' 加入了聊天室';
 	//新用户加入,全站广播 io.emit
-	this.io.emit('new user', msg);
-
+	//this.io.emit('new user', msg);
+	
 }
 
 //disconnection
@@ -153,11 +166,16 @@ chat.changeName = function(socket) {
 //这个函数里没有绑定事件,只是让新用户一进来直接进到lobby房间
 chat.assignRoom = function(socket) {
 	var that = this;
+	var sysMsg = this.userName[socket.id] +'加入了你的房间';
+	this.io.to('Lobby').emit('sys message', sysMsg);
 	//将这个用户限定到lobby广播范围,这样下次可以直接用to('lobby').emit来广播这个范围里的所有人。
 	//这个<范围>跟<房间>类似，不知道学名叫什么。socket.io内置函数join
 	socket.join('Lobby', function(){
 		that.currentRoom[socket.id] = 0;
 		that.Room[0].count ++;
+		sysMsg = '你加入了房间Lobby';
+		//向这一个客户端广播系统消息:你加入了房间
+		socket.emit('sys message', sysMsg);
 		//更新房间列表
 		that.roomlst();
 	});
