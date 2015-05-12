@@ -11,17 +11,24 @@
     <div id="container">
         <div id="wrapper1">
         <div class="ani">
-            <div id="namebox">
-                <i class="icon-emo-wink"></i>guest
-            </div>
+            <form id="nameform">
+            <div id="namebox" class="icon-emo-wink">
+                <span id="myname">Wellcome</span>
+                    <span id="shownn" class="show-l">
+                        <input type="text" id="newmyname"/><button class="icon-ok-circled2"></button><i class="icon-cancel-circled2"></i>
+                    </span>
+                
+            </div></form>
             <div id="roombox">
+                <form id="roomform">
                 现在，你可以创建一个新的<br/>
                 <div class="new-room icon-chat">
                     <input type="button" id="newroom" value="聊天室"/>
-                    <span id="shownr">
-                        <input type="text" id="newrname"/><i class="icon-ok-circled2"></i><i class="icon-cancel-circled2"></i>
+                    <span id="shownr" class="show-l">
+                        <input type="text" id="newrname"/><button class="icon-ok-circled2"></button><i class="icon-cancel-circled2"></i>
                     </span>
                 </div>
+                </form>
             </div>
             <br>
             <div style="font-size:.9em"><i class="icon-emo-happy"></i>欢迎你进入他们的聊天室</div>
@@ -32,7 +39,7 @@
         </div>
         <div id="wrapper2">
             <div id="mes-box">
-                <form action="">
+                <form id="mesform" action="">
                 <i class="demo-icon icon-emo-happy"></i>
                   <input id="m" autocomplete="off" />
                   <button class="demo-icon icon-comment"></button>
@@ -42,16 +49,19 @@
         </div>
         
     </div>
-
+    <div id="screencover"></div>
     <!--socket.io.js-->
     <script src="/socket.io/socket.io.js"></script>
     <!--jQuery-->
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
+       var ww = document.documentElement.clientWidth;
+       var hh = document.documentElement.clientHeight;
+       window.onresize = function(){ww = document.documentElement.clientWidth;hh = document.documentElement.clientHeight;}
 		//颜色变量
 		var color,bgcolor;
         
-		
+		var myname="";
 		// socket object
         // socket 对象
         var socket = io();
@@ -87,7 +97,7 @@
         }
         // once the form submit, it checks the text input and dispatch to different to command to process
         // 一旦表单提交，它会检测输入文本并根本文本信息分发不同命令
-        $('form').submit(function() {
+        $('#mesform').submit(function() {
             var msg = $('#m').val();
             dispatchCommand(msg)
             
@@ -118,6 +128,12 @@
         //监听'change room name'事件。一旦事件触发(emit)，它将会在浏览器上显示信息        
         socket.on('change room name', function(msg) {
           //$('#roomName').html(msg);
+          document.getElementById("m").focus();
+        });
+        socket.on('change name', function(msg) {
+          //$('#roomName').html(msg);
+          myname = msg;
+          document.getElementById("myname").innerHTML = myname;
         });
         socket.on('room list', function(msg){
             // alert(msg);
@@ -136,15 +152,38 @@
         }
         $("#newroom").click(function(){
             var that = this;
-            this.className="hidden";
-            $("#shownr").show().css();
-            setTimeout(function() {
-                that.style.width=0;
-            }, 1000);
-            
+            if(ww>600){
+                this.className="hide-l";
+                $("#shownr").show().removeClass("show600");
+                setTimeout(function() {
+                    that.style.display="none";
+                }, 1001);
+            }else{
+                $("#screencover").css({height:hh,display:"block"}).click(function(){this.style.display="none";$("#shownr").hide();});
+                $("#shownr").show().attr("class","show600");
+            }
+            document.getElementById("newrname").focus();
         });
-        
-        
+        $('#roomform').submit(function() {
+            var msg = $('#newrname').val();
+            socket.emit('change room', msg);
+            $("#newroom").attr("class","show-l").show();
+            $("#shownr").hide();$("#screencover").hide();
+            $('#newrname').val("");
+            return false;
+        });
+        $("#myname").click(function(){
+            $(this).hide();
+            $("#shownn").show();
+            $("#newmyname").val(myname).focus();
+        });
+        $("#nameform").submit(function(){
+            var msg = $('#newmyname').val();
+            socket.emit('change name', msg);
+            $("#shownn").hide();
+            $("#myname").show().attr("class","show-l");
+            return false;
+        });
         
 		//JS动画函数
 		function fx(f,t,fn,end,tm,pow){

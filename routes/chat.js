@@ -103,7 +103,7 @@ chat.assignGuestName = function(socket) {
 	this.userName[socket.id] = 'Guest' + this.userNum;
 	this.usedName.push('Guest' + this.userNum);
 	this.userNum++;
-	
+	socket.emit('change name',this.userName[socket.id]);
 	//ar msg = this.userName[socket.id] + ' 加入了聊天室';
 	//新用户加入,全站广播 io.emit
 	//this.io.emit('new user', msg);
@@ -152,7 +152,7 @@ chat.changeName = function(socket) {
 			that.usedName[nameIndex] = msg;
 			
 			//改了名字,只像这个用户自己广播socket.emit
-			socket.emit('sys message',  '你的名字已经更改为 ' + msg);
+			socket.emit('change name',msg);
 			//也告诉房间里的所有人吧
 			that.io.to(that.Room[that.currentRoom[socket.id]].name).emit('sys message',  name + '的名字已经更改为 ' + msg);
 		}
@@ -176,6 +176,7 @@ chat.assignRoom = function(socket) {
 		sysMsg = '你加入了房间Lobby';
 		//向这一个客户端广播系统消息:你加入了房间
 		socket.emit('sys message', sysMsg);
+		socket.emit('chat myself', {name:that.userName[socket.id],msg:"这是你的初始昵称"});
 		//更新房间列表
 		that.roomlst();
 	});

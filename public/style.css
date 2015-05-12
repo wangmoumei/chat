@@ -13,7 +13,7 @@
       font-style: normal;
     }
 body { 
-  font: 20px Helvetica, Arial; 
+  font: 22px Helvetica, Arial; 
 }
 
 
@@ -50,6 +50,7 @@ top:0;bottom:0;
    background:#56eed9;
    color:#fff;
    padding-left:10px;
+   padding-top:10px;
 }
 #wrapper1 .ani{
 	position:relative;
@@ -176,13 +177,14 @@ font-size:20px;
   list-style-type: none;
   margin-right: 10px;
 }
-#room li,.new-room{
+#room li,.new-room,#namebox{
 	position:relative;
+  overflow: hidden;
 	font-size:1em;
 	padding:10px 0 10px 10px;
 	transition:background-color 1s ease-in;
 }
-#room li:hover,.new-room:hover{
+#room li:hover,.new-room:hover,#namebox:hover{
 	background:#1fbba6;
 	transition:background-color .3s ease-in;	
 }
@@ -202,12 +204,11 @@ font-size:20px;
 
 #namebox{
 	font-size:1.5em;
-	padding:20px 0;
 }
 #roombox{
-	font-size:.9em;
+  padding-top: 10px;
+	font-size:1em;
 	line-height:20px;
-	overflow:hidden;
 }
 #roombox #newroom{
 	border:none;
@@ -217,49 +218,100 @@ font-size:20px;
 	font-size:1em;
 }
 #newrname{
-	border:none;	
+	border:none;
+  padding:3px;
+  width:100px;
 }
-#shownr{
-	position:absolute;
-	left:30px;	
+#shownr{	
 	display:none;
-	-webkit-animation: 1s showed ease;
-    -moz-animation: 1s showed ease;
-    animation: 1s showed ease;
 }
-@media (min-width:200px) and (max-width:568px){
+#roombox .show600{
+  position:fixed;
+  display:block;
+  left:200px;top:200px;
+  background:#56eed9;
+  padding:10px;
+  z-index: 2;
+  border-radius: 3px;
+  box-shadow: 1px 1px 1px 1px rgba(0,0,0,.1);
+}
+#screencover{
+  position:fixed;
+  top:0;left:0;
+  background:rgba(0,0,0,.3);
+  width:100%;
+  display: none;
+  z-index: 1;
+  
+}
+#shownr button,#shownn button{
+  border:none;background: none;color: #fff;
+}
+#shownr i,#shownr button{font-size:1.4em;position: relative;top:4px}
+
+#shownn{display: none;}
+#newmyname{padding:5px;border:none;width:150px;}
+#shownn i,#shownn button{font-size:1em;position: relative;top:4px}
+@media (min-width:200px) and (max-width:600px){
 body { 
  font-size:16px;
  font-family:微软雅黑;
 }
+#shownr i,#shownr button{font-size:1.8em;position: relative;top:4px}
 }
-.hidden{
+.hide-l{
 	position:relative;
-	-webkit-animation: 1s hide ease;
-    -moz-animation: 1s hide ease;
-    animation: 1s hide ease;
+  overflow: hidden;
+	-webkit-animation: 1s hide-l ease;
+    -moz-animation: 1s hide-l ease;
+    animation: 1s hide-l ease;
 }
-@-webkit-keyframes hide {
-    0% { left:0px;opacity:1;}
-    100% { left:-50px;opacity:0;}
+.show-l{
+	position:relative;
+	-webkit-animation: 1s show-l ease;
+    -moz-animation: 1s show-l ease;
+    animation: 1s show-l ease;
+}
+.hide-t{
+  position:relative;
+	-webkit-animation: 1s hide-t ease;
+    -moz-animation: 1s hide-t ease;
+    animation: 1s hide-t ease;
+
+}
+@-webkit-keyframes hide-l {
+    0% { width:50px;opacity:1;}
+    100% { width:0px;opacity:0;}
   }
-  @-moz-keyframes hide {
-     0% { left:0px;opacity:1;}
-    100% { left:-50px;opacity:0;}
+  @-moz-keyframes hide-l {
+     0% { width:50px;opacity:1;}
+    100% { width:0px;opacity:0;}
   }
-  @keyframes hide{
-     0% { left:0px;opacity:1;}
-    100% { left:-50px;opacity:0;}
+  @keyframes hide-l{
+     0% { width:50px;opacity:1;}
+    100% { width:0px;opacity:0;}
   }
-  @-webkit-keyframes showed {
+  @-webkit-keyframes show-l {
     0% { left:50px;opacity:0;}
-    100% { left:30px;opacity:1;}
+    100% { left:0px;opacity:1;}
   }
-  @-moz-keyframes showed {
+  @-moz-keyframes show-l {
     0% { left:50px;opacity:0;}
-    100% { left:30px;opacity:1;}
+    100% { left:0px;opacity:1;}
   }
-  @keyframes showed{
+  @keyframes show-l{
     0% { left:50px;opacity:0;}
-    100% { left:30px;opacity:1;}
+    100% { left:0px;opacity:1;}
+  }
+  @-webkit-keyframes hide-t {
+    0% { top:0px;opacity:1;}
+    100% { top:-50px;opacity:0;}
+  }
+  @-moz-keyframes hide-t {
+     0% { top:0px;opacity:1;}
+    100% { top:-50px;opacity:0;}
+  }
+  @keyframes hide-t{
+     0% { top:0px;opacity:1;}
+    100% { letopft:-50px;opacity:0;}
   }
