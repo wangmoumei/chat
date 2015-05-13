@@ -21,3 +21,6 @@ chat.roomlst = function(){
 <p>更新了UI，原版的实在看不下去。有了心怡的UI才有动力学下去！233</p>
 <img src="https://github.com/wangmoumei/chat/blob/master/public/image/ver2.0.png" width=400/>
 <p>233 顺手做了移动版</p>
+<h3>第三次和第四次修改内容</h3>
+<p>都在改UI。。。随着UI优化后台。。</p>
+<img src="https://github.com/wangmoumei/chat/blob/master/public/image/v1.4.jpg" width=400/>
