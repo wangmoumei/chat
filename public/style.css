@@ -94,6 +94,23 @@ top:0;bottom:0;
      0% { top:-40px;}
     100% { top:0}
   }
+  #emobox{
+	  display:none;
+	  background:#54d5eb;
+	  color:#fff;
+	  font-size:1.4em;
+	  line-height:30px;
+	  overflow:hidden;
+	  height:auto;
+  }
+  #emobox i{display:inline-block; cursor:pointer}
+  #emobox i:hover{background:rgba(0,0,0,.1)}
+#emobox i.icon-emo-thumbsup{width:40px; }
+#emobox i.icon-emo-coffee{width:45px}
+#emobox i.icon-emo-beer,#emobox i.icon-emo-shoot{width:50px;}
+#messages li i.icon-emo-thumbsup{width:30px}
+#messages i.icon-emo-coffee{width:33px}
+#messages i.icon-emo-beer,#messages i.icon-emo-shoot{width:36px;}
 #mes-box form { 
   bottom: 0; 
   width: 100%; 
@@ -138,7 +155,7 @@ font-size:20px;
   list-style-type: none; 
   padding: 0; 
 }
-
+#messages li i{display:inline-block;text-align:left;}
 #messages li { 
   padding: 5px 10px; 
   position:relative;
@@ -258,6 +275,9 @@ body {
  font-family:微软雅黑;
 }
 #shownr i,#shownr button{font-size:1.8em;position: relative;top:4px}
+#emobox i.icon-emo-thumbsup{width:30px; }
+#emobox i.icon-emo-coffee{width:34px;}
+#emobox i.icon-emo-beer,#emobox i.icon-emo-shoot{width:37px;}
 }
 .hide-l{
 	position:relative;
@@ -277,7 +297,16 @@ body {
 	-webkit-animation: 1s hide-t ease;
     -moz-animation: 1s hide-t ease;
     animation: 1s hide-t ease;
-
+}
+.hide-h{
+	-webkit-animation: 1s hide-h ease;
+    -moz-animation: 1s hide-h ease;
+    animation: 1s hide-h ease;
+}
+.show-h{
+	-webkit-animation: 1s show-h ease;
+    -moz-animation: 1s show-h ease;
+    animation: 1s show-h ease;
 }
 @-webkit-keyframes hide-l {
     0% { width:50px;opacity:1;}
@@ -314,4 +343,28 @@ body {
   @keyframes hide-t{
      0% { top:0px;opacity:1;}
     100% { letopft:-50px;opacity:0;}
+  }
+  @-webkit-keyframes show-h {
+    0% { height:0px;opacity:0;}
+    100% { height:60px;opacity:1;}
+  }
+  @-moz-keyframes show-h {
+    0% { height:0px;opacity:0;}
+    100% { height:60px;opacity:1;}
+  }
+  @keyframes show-h{
+    0% { height:0px;opacity:0;}
+    100% { height:60px;opacity:1;}
+  }
+    @-webkit-keyframes hide-h {
+    0% { height:60px;opacity:1;}
+    100% { height:0px;opacity:0;}
+  }
+  @-moz-keyframes hide-h {
+    0% { height:60px;opacity:1;}
+    100% { height:0px;opacity:0;}
+  }
+  @keyframes hide-h{
+    0% { height:60px;opacity:1;}
+    100% { height:0px;opacity:0;}
   }

@@ -15,7 +15,7 @@
             <div id="namebox" class="icon-emo-wink">
                 <span id="myname">Wellcome</span>
                     <span id="shownn" class="show-l">
-                        <input type="text" id="newmyname"/><button class="icon-ok-circled2"></button><i class="icon-cancel-circled2"></i>
+                        <input type="text" id="newmyname"/><button class="icon-ok-circled2"></button><i id="namecancel" class="icon-cancel-circled2"></i>
                     </span>
                 
             </div></form>
@@ -25,7 +25,7 @@
                 <div class="new-room icon-chat">
                     <input type="button" id="newroom" value="聊天室"/>
                     <span id="shownr" class="show-l">
-                        <input type="text" id="newrname"/><button class="icon-ok-circled2"></button><i class="icon-cancel-circled2"></i>
+                        <input type="text" id="newrname"/><button class="icon-ok-circled2"></button><i id="roomcancel" class="icon-cancel-circled2"></i>
                     </span>
                 </div>
                 </form>
@@ -39,8 +39,30 @@
         </div>
         <div id="wrapper2">
             <div id="mes-box">
+                <div id="emobox">
+                    <i class="icon-emo-happy" title="/e01"></i>
+                    <i class="icon-emo-wink" title="/e02"></i>
+                    <i class="icon-emo-wink2" title="/e03"></i>
+                    <i class="icon-emo-unhappy" title="/e04"></i>
+                    <i class="icon-emo-sleep" title="/e05"></i>
+                    <i class="icon-emo-devil" title="/e06"></i>
+                    <i class="icon-emo-surprised" title="/e07"></i>
+                    <i class="icon-emo-tongue" title="/e08"></i>
+                    <i class="icon-emo-laugh" title="/e09"></i>
+                    <i class="icon-emo-sunglasses" title="/e10"></i>
+                    <i class="icon-emo-displeased" title="/e11"></i>
+                    <i class="icon-emo-grin" title="/e12"></i>
+                    <i class="icon-emo-saint" title="/e13"></i>
+                    <i class="icon-emo-angry" title="/e14"></i>
+                    <i class="icon-emo-cry" title="/e15"></i>
+                    <i class="icon-emo-squint" title="/e16"></i>
+                    <i class="icon-emo-thumbsup" title="/e17"></i>
+                    <i class="icon-emo-coffee" title="/e18"></i>
+                    <i class="icon-emo-beer" title="/e19"></i>
+                    <i class="icon-emo-shoot" title="/e20"></i>
+                </div>
                 <form id="mesform" action="">
-                <i class="demo-icon icon-emo-happy"></i>
+                <i class="demo-icon icon-emo-happy" id="emobag"></i>
                   <input id="m" autocomplete="off" />
                   <button class="demo-icon icon-comment"></button>
                 </form>
@@ -68,14 +90,16 @@
         // display message in html
         // 在浏览器里显示信息
         function showMsg(msg,type) {
+			if(typeof(msg) == "string")msg = emo(msg);
+			else msg.msg = emo(msg.msg);
 			if(type == 1)
             $('#messages').prepend($('<li class="mes">').html(msg.name +': '+msg.msg));
 			else if(type == 2)
-            $('#messages').prepend($('<li class="sys">').text(msg));
+            $('#messages').prepend($('<li class="sys">').html(msg));
 			else if(type == 3)
             $('#messages').prepend($('<li class="myself">').html(msg.msg +' :'+msg.name));
 			else if(type == 4)
-            $('#messages').prepend($('<li class="exit">').text(msg));
+            $('#messages').prepend($('<li class="exit">').html(msg));
         }
         //dispatch command to different event 针对不同发送的信息进行命令分发
         // /join xxxx --> join a room xxx 加入新聊天室xxx
@@ -90,6 +114,7 @@
                 else if (msgArr[0] === 'name') {
                     socket.emit('change name', msgArr[1]);
                 }
+				else socket.emit('chat message', "/" +msg);
             }
             else {
                 socket.emit('chat message', msg);
@@ -140,7 +165,7 @@
             
             var roomlst='';
             for(var i=0;i<msg.length;i++){
-                roomlst += '<li id='+msg[i].name+' class="icon-chat" onclick=goRoom(this)>'+msg[i].name+'('+msg[i].count+')</li>';
+                roomlst += '<li id='+msg[i].name+' class="icon-chat" onclick=goRoom(this)>'+emo(msg[i].name)+'('+msg[i].count+')</li>';
             }
             $("#room").html(roomlst);
         });
@@ -184,7 +209,49 @@
             $("#myname").show().attr("class","show-l");
             return false;
         });
-        
+        $("#roomcancel").click(function(){
+            $("#screencover").hide();
+            //$("#shownn").hide();
+            $("#shownr").hide();$("#newroom").attr("class","show-l").css("display","inline");
+            
+        });
+        $("#namecancel").click(function(){
+            $("#screencover").hide();
+            $("#shownn").hide();$("#myname").show().attr("class","show-l");
+            //$("#shownr").hide();
+            
+        });
+		document.getElementById('emobag').onclick=function(){
+			var box = document.getElementById('emobox');
+			if(box.style.display !="block"){
+				box.className = 'show-h';
+				box.style.display = "block";	
+			}
+		}
+		$("#emobox i").click(function(){
+			var that = this;
+			$("#m").insert({text:that.title}).focus();
+			var box = document.getElementById('emobox');
+			box.className = "hide-h";
+			setTimeout(function(){box.style.display="none"},1000);
+		});
+		var emolst = ["","happy","wink","wink2","unhappy","sleep","devil","surprised","tongue","laugh","sunglasses","displeased","grin","saint","angry","cry","squint","thumbsup","coffee","beer","shoot"];
+		function emo(msg){
+				var str = "";
+				for(var i=0;i<msg.length;i++){
+					var s = msg.substr(i,1);
+					if(i+3>msg.length){ str +=	s;continue;}
+					if(s!='/')str +=	s;
+					else {
+						var n = parseInt(msg.substr((i+2),2));
+						if( n >0 ){
+							str +='<i class="icon-emo-'+emolst[n]+'"></i>';
+							i+=3;
+						}
+					}
+				}
+				return str;
+		}
 		//JS动画函数
 		function fx(f,t,fn,end,tm,pow){
 			var D=Date;
@@ -197,6 +264,35 @@
 				(false===fn(+f+(t-f)*Math.pow(z,pow),z)||z==1) && end && end(clearTimeout(e));
 			},10);
 		}
+		(function($){ 
+			$.fn.extend({ 
+			"insert":function(value){ 
+			//默认参数 
+			value=$.extend({ 
+			"text":"123" 
+			},value); 
+			var dthis = $(this)[0]; //将jQuery对象转换为DOM元素 
+			//IE下 
+			if(document.selection){ 
+			$(dthis).focus(); //输入元素textara获取焦点 
+			var fus = document.selection.createRange();//获取光标位置 
+			fus.text = value.text; //在光标位置插入值 
+			$(dthis).focus(); ///输入元素textara获取焦点 
+			} 
+			//火狐下标准 
+			else if(dthis.selectionStart || dthis.selectionStart == '0'){ 
+			var start = dthis.selectionStart; 　　 //获取焦点前坐标 
+			var end =dthis.selectionEnd; 　　//获取焦点后坐标 
+			　　　　//以下这句，应该是在焦点之前，和焦点之后的位置，中间插入我们传入的值 .然后把这个得到的新值，赋给文本框 
+			　　　　　　dthis.value = dthis.value.substring(0, start) + value.text + dthis.value.substring(end, dthis.value.length); } 
+			　　　　//在输入元素textara没有定位光标的情况 
+			　　　　　　else{ 
+			　　　　　　　　　　this.value += value.text; this.focus(); 
+			　　　　　　}; 
+			　　　　　　return $(this); 
+			　　　　} 
+			　　}) 
+			})(jQuery) 
     </script>
   </body>
 </html>
